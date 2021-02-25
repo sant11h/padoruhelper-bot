@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PadoruHelperBot.Core.Services.Alerts;
+using PadoruHelperBotApp.Services.Alerts;
 using PadoruHelperBotDAL;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System;

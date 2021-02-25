@@ -1,15 +1,8 @@
 ﻿using DSharpPlus;
-using DSharpPlus.CommandsNext;
 using PadoruHelperBot.Core.Services.Alerts;
-using PadoruHelperBotApp.Services.Alerts;
-using PadoruHelperBotDAL;
-using PadoruHelperBotDAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace PadoruHelperBotApp
+namespace PadoruHelperBotApp.Services.Alerts
 {
     public class AlertsController : IAlertsController
     {

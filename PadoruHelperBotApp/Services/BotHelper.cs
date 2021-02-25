@@ -26,7 +26,10 @@ namespace PadoruHelperBotApp.Services
 
         private void InitStrategies()
         {
-            strategies.Add(new WorksStrategy());
+            strategies = new List<IAlertStrategy>
+            {
+                new WorksStrategy()
+            };
         }
 
         public void InitAlertsLoop()

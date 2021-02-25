@@ -1,8 +1,7 @@
 ﻿using DSharpPlus;
-using PadoruHelperBotApp.Services.Alerts;
 using System.Threading.Tasks;
 
-namespace PadoruHelperBotApp
+namespace PadoruHelperBotApp.Services.Alerts
 {
     public interface IAlertsController
     {
