@@ -17,8 +17,8 @@ namespace PadoruHelperBotApp.Commands
 {
     public class TimerCommands : BaseCommandModule
     {
-        private readonly IAlertService _alertService;
-        public TimerCommands(IAlertService alertService)
+        private readonly IAlertsService _alertService;
+        public TimerCommands(IAlertsService alertService)
         {
             _alertService = alertService;
         } 
@@ -29,7 +29,7 @@ namespace PadoruHelperBotApp.Commands
         {
             if (ctx.Prefix.ToLower() == "rpg")
             {
-                var item = await _alertService.GetAlertPetition(ctx.Member.Id, AlertType.Works).ConfigureAwait(false);
+                var item = await _alertService.Get(ctx.Member.Id, AlertType.Works).ConfigureAwait(false);
                 if (item == null)
                 {
                     await AddWork(ctx);
@@ -39,7 +39,7 @@ namespace PadoruHelperBotApp.Commands
 
         private async Task AddWork(CommandContext ctx)
         {
-            await _alertService.AddAlertPetition(
+            await _alertService.Add(
                 new AlertPetition
                 {
                     UserId= ctx.Member.Id,
@@ -47,7 +47,7 @@ namespace PadoruHelperBotApp.Commands
                     GuildId = ctx.Guild.Id,
                     ChannelId = ctx.Channel.Id,
                     SendedAt = DateTime.Now
-                }).ConfigureAwait(false);
+                });
         }
     }
 }

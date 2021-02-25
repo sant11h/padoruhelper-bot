@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using DSharpPlus;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,9 +30,8 @@ namespace PadoruHelperBotApp
                 opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
-
-            services.AddScoped<IAlertService, AlertService>();
-            services.AddScoped<IAlertNotifier, AlertNotifier>();
+            services.AddScoped<IAlertsService, AlertsService>();
+            services.AddScoped<IAlertsController, AlertsController>();
 
             var serviceProvider = services.BuildServiceProvider();
 

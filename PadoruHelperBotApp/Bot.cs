@@ -6,6 +6,7 @@ using DSharpPlus.Interactivity.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using PadoruHelperBotApp.Commands;
+using PadoruHelperBotApp.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,34 +18,21 @@ namespace PadoruHelperBotApp
 {
     public class Bot
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
         public DiscordClient Client { get; private set; }
         public InteractivityExtension Interactivity { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
-        public IAlertNotifier _alertNotifier { get; set; }
-        private Timer timer;
+        private BotHelper botHelper;
 
         public Bot(IServiceProvider services, IServiceScopeFactory scopeFactory)
         {
-            _serviceScopeFactory = scopeFactory;
+            InitConfiguration(services, scopeFactory);
 
-            InitConfiguration(services);
-
-            InitCommands();
+            RegisterCommands();
 
             Client.ConnectAsync();
-
-            InitTimer();
         }
 
-        public void Test()
-        {
-            Client.GetGuildAsync(90902701063282688)
-                    .Result.GetChannel(813165215436505138)
-                    .SendMessageAsync($"test");
-        }
-
-        private void InitConfiguration(IServiceProvider services)
+        private void InitConfiguration(IServiceProvider services, IServiceScopeFactory scopeFactory)
         {
             var json = string.Empty;
 
@@ -85,10 +73,12 @@ namespace PadoruHelperBotApp
 
             Commands = Client.UseCommandsNext(commandsConfig);
 
-           
+            botHelper = new BotHelper(Client, scopeFactory);
+            botHelper.RemoveExpiredAlerts();
+            botHelper.InitAlertsLoop();
         }
 
-        private void InitCommands()
+        private void RegisterCommands()
         {
             Commands.RegisterCommands<FunCommands>();
             Commands.RegisterCommands<TimerCommands>();
@@ -98,23 +88,6 @@ namespace PadoruHelperBotApp
         private Task Client_Ready(DiscordClient sender, ReadyEventArgs e)
         {
             return Task.CompletedTask;
-        }
-
-        private void InitTimer()
-        {
-            timer = new Timer();
-            timer.Interval = 5000;
-            timer.Elapsed += Timer_Elapsed;
-            timer.Start();
-        }
-
-        private async void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            using (var scope = _serviceScopeFactory.CreateScope())
-            {
-                var scopedService = scope.ServiceProvider.GetService<IAlertNotifier>();
-                await scopedService.AlertWork(Client);
-            }
         }
     }
 }
