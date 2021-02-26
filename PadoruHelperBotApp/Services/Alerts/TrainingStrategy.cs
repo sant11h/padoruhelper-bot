@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace PadoruHelperBotApp.Services.Alerts
 {
-    public class WorksStrategy : IAlertStrategy
+    public class TrainingStrategy : IAlertStrategy
     {
         public TimeSpan completionTime { get; private set; }
 
-        public WorksStrategy(TimeSpan completionTimeSpan)
+        public TrainingStrategy(TimeSpan completionTimeSpan)
         {
             completionTime = completionTimeSpan;
         }
 
         public async Task Alert(DiscordClient client, IAlertsService alertService)
         {
-            var alerts = await alertService.GetByType(AlertType.Works);
+            var alerts = await alertService.GetByType(AlertType.Training);
 
             foreach (var item in alerts)
             {
@@ -29,14 +29,14 @@ namespace PadoruHelperBotApp.Services.Alerts
 
                     await client.GetGuildAsync(item.GuildId)
                     .Result.GetChannel(item.ChannelId)
-                    .SendMessageAsync($"{ client.GetUserAsync(item.UserId).Result.Mention}, your **work** is done!");
+                    .SendMessageAsync($"{ client.GetUserAsync(item.UserId).Result.Mention}, your **training** is done!");
                 }
             }
         }
 
         public async Task RemoveExpired(DiscordClient client, IAlertsService alertService)
         {
-            var alerts = await alertService.GetByType(AlertType.Works);
+            var alerts = await alertService.GetByType(AlertType.Training);
 
             foreach (var item in alerts)
             {

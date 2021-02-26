@@ -11,5 +11,6 @@ namespace PadoruHelperBotApp.Services.Alerts
     {
         Task RemoveExpired(DiscordClient client, IAlertsService alertService);
         Task Alert(DiscordClient client, IAlertsService alertService);
+        TimeSpan completionTime { get; }
     }
 }

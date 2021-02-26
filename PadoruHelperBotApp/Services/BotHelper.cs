@@ -28,7 +28,9 @@ namespace PadoruHelperBotApp.Services
         {
             strategies = new List<IAlertStrategy>
             {
-                new WorksStrategy()
+                new WorksStrategy(TimeSpan.FromMinutes(5)),
+                new TrainingStrategy(TimeSpan.FromMinutes(15)),
+                new AdventureStrategy(TimeSpan.FromHours(1))
             };
         }
 
