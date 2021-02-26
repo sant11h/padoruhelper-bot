@@ -6,6 +6,6 @@ namespace PadoruHelperBotDAL.Models
 {
     public enum AlertType
     {
-        Works, Adventure
+        Works, Adventure, Training
     }
 }

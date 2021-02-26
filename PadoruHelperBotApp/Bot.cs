@@ -60,7 +60,7 @@ namespace PadoruHelperBotApp
 
             Client.UseInteractivity(new InteractivityConfiguration
             {
-                Timeout = TimeSpan.FromSeconds(10)
+                Timeout = TimeSpan.FromSeconds(30)
             });
 
             var commandsConfig = new CommandsNextConfiguration
@@ -80,9 +80,9 @@ namespace PadoruHelperBotApp
 
         private void RegisterCommands()
         {
-            Commands.RegisterCommands<FunCommands>();
+            //Commands.RegisterCommands<FunCommands>();
             Commands.RegisterCommands<TimerCommands>();
-            //Commands.RegisterCommands<ConfigCommands>();
+            Commands.RegisterCommands<ConfigCommands>();
         }
 
         private Task Client_Ready(DiscordClient sender, ReadyEventArgs e)
