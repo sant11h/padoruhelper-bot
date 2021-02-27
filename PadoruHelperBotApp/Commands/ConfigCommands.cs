@@ -26,6 +26,8 @@ namespace PadoruHelperBotApp.Commands
         [GroupCommand]
         public async Task Config(CommandContext ctx)
         {
+            var userData = await _userSubsService.GetOrCreate(ctx.Member.Id, ctx.Guild.Id);
+
             var warningEmoji = DiscordEmoji.FromName(ctx.Client, ":warning:");
             var axeEmoji = DiscordEmoji.FromName(ctx.Client, ":axe:");
             var arrowEmoji = DiscordEmoji.FromName(ctx.Client, ":arrow_double_up:");
@@ -36,9 +38,9 @@ namespace PadoruHelperBotApp.Commands
                 Title = $"{warningEmoji} Configuration for Alerts {warningEmoji}",
                 Color = DiscordColor.Aquamarine
             };
-            embed.AddField($"{axeEmoji} config work {axeEmoji}", "Enable or disable **works** (chop, fish, etc) alert.");
-            embed.AddField($"{arrowEmoji} config training {arrowEmoji}", "Enable or disable **training** alert.");
-            embed.AddField($"{boomEmoji} config adventure {boomEmoji}", "Enable or disable **adventure** alert.");
+            embed.AddField($"{axeEmoji} config work {axeEmoji}", $"Enable or disable **work** (chop, fish, etc) alert. Currently is **{BoolToText(userData.Works)}**.");
+            embed.AddField($"{arrowEmoji} config training {arrowEmoji}", $"Enable or disable **training** alert. Currently is **{BoolToText(userData.Training)}**.");
+            embed.AddField($"{boomEmoji} config adventure {boomEmoji}", $"Enable or disable **adventure** alert. Currently is **{BoolToText(userData.Adventure)}**.");
 
             await ctx.Channel.SendMessageAsync(embed);
         }
@@ -77,7 +79,7 @@ namespace PadoruHelperBotApp.Commands
         [Command("training")]
         [Description("Toggle training alert")]
         public async Task ConfigTraining(CommandContext ctx)
-        {
+        { 
             var sadgeEmoji = DiscordEmoji.FromName(ctx.Client, ":Sadge:");
             var usagiEmoji = DiscordEmoji.FromName(ctx.Client, ":usagi:");
 
@@ -151,6 +153,15 @@ namespace PadoruHelperBotApp.Commands
             }
 
             await _userSubsService.Update(userSubs).ConfigureAwait(false);
+        }
+
+        private string BoolToText(bool boolean)
+        {
+            switch (boolean)
+            {
+                case true: return "enabled";
+                case false: return "disabled";
+            }
         }
     }
 }

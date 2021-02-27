@@ -51,10 +51,11 @@ namespace PadoruHelperBot.Core.Services.User
         public async Task Update(UserSubscriptions userSubscription)
         {
             var userSubs = await _context.UserSubscriptions
-                .Where(x => x.GuildId == userSubscription.GuildId)
-                .FirstOrDefaultAsync(x => x.UserId == userSubscription.UserId).ConfigureAwait(false);
+                .FirstOrDefaultAsync(x => x.UserId == userSubscription.UserId && x.GuildId == userSubscription.GuildId);
 
-            _context.Entry(userSubs).CurrentValues.SetValues(userSubscription);
+            userSubs.Works = userSubscription.Works;
+            userSubs.Training = userSubscription.Training;
+            userSubs.Adventure = userSubscription.Adventure;
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

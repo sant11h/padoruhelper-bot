@@ -29,7 +29,7 @@ namespace PadoruHelperBotApp
                     mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)
                     .MigrationsAssembly("PadoruHelperBotDAL.Migrations")
                    );
-                opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+   
             });
 
             services.AddScoped<IAlertsService, AlertsService>();
