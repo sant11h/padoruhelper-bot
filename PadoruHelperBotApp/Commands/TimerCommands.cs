@@ -28,7 +28,9 @@ namespace PadoruHelperBotApp.Commands
         }
 
         [Command("chop")]
-        [Aliases(new string[] { "fish", "axe", "net", "bowsaw", "boat", "pickup", "mine", "pickaxe" })]
+        [Aliases(new string[] { "fish", "axe", "net", "bowsaw", "boat", "pickup",
+                                "ladder", "mine", "pickaxe", "tractor", "chainsaw",
+                                "bigboat", "drill", "greenhouse", "dynamite"})]
         [Hidden]
         public async Task Work(CommandContext ctx)
         {
