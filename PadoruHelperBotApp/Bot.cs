@@ -32,6 +32,13 @@ namespace PadoruHelperBotApp
             Client.ConnectAsync();
         }
 
+        public void WakeUp()
+        {
+            Client.GetGuildAsync(90902701063282688)
+                    .Result.GetChannel(813165215436505138)
+                    .SendMessageAsync($"Ahem-ahem, i took a little nap :sleepy:");
+        }
+
         private void InitConfiguration(IServiceProvider services, IServiceScopeFactory scopeFactory)
         {
             var json = string.Empty;
@@ -75,6 +82,7 @@ namespace PadoruHelperBotApp
 
             botHelper = new BotHelper(Client, scopeFactory);
             botHelper.RemoveExpiredAlerts();
+            WakeUp();
             botHelper.InitAlertsLoop();
         }
 

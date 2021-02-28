@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PadoruHelperBot.Core.Services.Alerts;
 using PadoruHelperBot.Core.Services.User;
@@ -17,14 +18,19 @@ namespace PadoruHelperBotApp
 {
     public class Startup
     {
+        private IConfiguration _config;
+        public Startup(IConfiguration config)
+        {
+            _config = config;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            string connString = "server=localhost;User Id = sant11h;Persist Security Info = True;database = padoruhelper;" +
-                             "password = sundownss;Convert Zero Datetime = True;";
+            string connectionString = _config.GetConnectionString("SantiServer");
 
             services.AddDbContext<PadoruHelperContext>(opt =>
             {
-                opt.UseMySql(connString, 
+                opt.UseMySql(connectionString, 
                     new MySqlServerVersion(new System.Version(10,4,14)),
                     mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)
                     .MigrationsAssembly("PadoruHelperBotDAL.Migrations")
