@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartupObject>PadoruHelperBotApp.Program</StartupObject>
     <ApplicationIcon>padoru.ico</ApplicationIcon>
+    <UserSecretsId>c88080ff-bc2a-45b9-a65d-f8c11c6f7347</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,6 +33,12 @@
     <ProjectReference Include="..\PadoruHelperBot.Core\PadoruHelperBot.Core.csproj" />
     <ProjectReference Include="..\PadoruHelperBotDAL.Migrations\PadoruHelperBotDAL.Migrations.csproj" />
     <ProjectReference Include="..\PadoruHelperBotDAL\PadoruHelperBotDAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties config_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

@@ -1,5 +1,5 @@
 ﻿using DSharpPlus;
-using PadoruHelperBot.Core.Services.Alerts;
+using PadoruHelperBot.Core.Services;
 using PadoruHelperBotDAL.Models;
 using System;
 using System.Collections.Generic;

@@ -2,8 +2,7 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Microsoft.EntityFrameworkCore;
-using PadoruHelperBot.Core.Services.Alerts;
-using PadoruHelperBot.Core.Services.User;
+using PadoruHelperBot.Core.Services;
 using PadoruHelperBotDAL;
 using PadoruHelperBotDAL.Models;
 using System;
@@ -34,27 +33,25 @@ namespace PadoruHelperBotApp.Commands
         [Hidden]
         public async Task Work(CommandContext ctx)
         {
-            if (!await IsSubscribed(ctx, AlertType.Works))
+            if (ctx.Prefix.ToLower() != "rpg" || !await IsSubscribed(ctx, AlertType.Works))
             {
                 return;
             }
 
-            if (ctx.Prefix.ToLower() == "rpg")
+            var item = await _alertService.Get(ctx.Member.Id, AlertType.Works).ConfigureAwait(false);
+            if (item == null)
             {
-                var item = await _alertService.Get(ctx.Member.Id, AlertType.Works).ConfigureAwait(false);
-                if (item == null)
-                {
-                    await _alertService.Add(
-                        new AlertPetition
-                        {
-                            UserId = ctx.Member.Id,
-                            AlertType = AlertType.Works,
-                            GuildId = ctx.Guild.Id,
-                            ChannelId = ctx.Channel.Id,
-                            SendedAt = DateTime.Now
-                        });
-                }
+                await _alertService.Add(
+                    new AlertPetition
+                    {
+                        UserId = ctx.Member.Id,
+                        AlertType = AlertType.Works,
+                        GuildId = ctx.Guild.Id,
+                        ChannelId = ctx.Channel.Id,
+                        SendedAt = DateTime.Now
+                    });
             }
+            
         }
 
         [Command("adventure")]
@@ -62,27 +59,25 @@ namespace PadoruHelperBotApp.Commands
         [Hidden]
         public async Task Adventure(CommandContext ctx)
         {
-            if (!await IsSubscribed(ctx, AlertType.Adventure))
+            if (ctx.Prefix.ToLower() != "rpg" || !await IsSubscribed(ctx, AlertType.Adventure))
             {
                 return;
             }
 
-            if (ctx.Prefix.ToLower() == "rpg")
+            var item = await _alertService.Get(ctx.Member.Id, AlertType.Adventure).ConfigureAwait(false);
+            if (item == null)
             {
-                var item = await _alertService.Get(ctx.Member.Id, AlertType.Adventure).ConfigureAwait(false);
-                if (item == null)
-                {
-                    await _alertService.Add(
-                        new AlertPetition
-                        {
-                            UserId = ctx.Member.Id,
-                            AlertType = AlertType.Adventure,
-                            GuildId = ctx.Guild.Id,
-                            ChannelId = ctx.Channel.Id,
-                            SendedAt = DateTime.Now
-                        });
-                }
+                await _alertService.Add(
+                    new AlertPetition
+                    {
+                        UserId = ctx.Member.Id,
+                        AlertType = AlertType.Adventure,
+                        GuildId = ctx.Guild.Id,
+                        ChannelId = ctx.Channel.Id,
+                        SendedAt = DateTime.Now
+                    });
             }
+            
         }
 
         [Command("training")]
@@ -90,28 +85,27 @@ namespace PadoruHelperBotApp.Commands
         [Hidden]
         public async Task Training(CommandContext ctx)
         {
-            if (!await IsSubscribed(ctx, AlertType.Training))
+            if (ctx.Prefix.ToLower() != "rpg" || !await IsSubscribed(ctx, AlertType.Training))
             {
                 return;
             }
 
-            if (ctx.Prefix.ToLower() == "rpg")
+            var item = await _alertService.Get(ctx.Member.Id, AlertType.Training).ConfigureAwait(false);
+            if (item == null)
             {
-                var item = await _alertService.Get(ctx.Member.Id, AlertType.Training).ConfigureAwait(false);
-                if (item == null)
-                {
-                    await _alertService.Add(
-                        new AlertPetition
-                        {
-                            UserId = ctx.Member.Id,
-                            AlertType = AlertType.Training,
-                            GuildId = ctx.Guild.Id,
-                            ChannelId = ctx.Channel.Id,
-                            SendedAt = DateTime.Now
-                        });
-                }
+                await _alertService.Add(
+                    new AlertPetition
+                    {
+                        UserId = ctx.Member.Id,
+                        AlertType = AlertType.Training,
+                        GuildId = ctx.Guild.Id,
+                        ChannelId = ctx.Channel.Id,
+                        SendedAt = DateTime.Now
+                    });
             }
         }
+
+
 
         public async Task<bool> IsSubscribed(CommandContext ctx, AlertType alertType)
         {

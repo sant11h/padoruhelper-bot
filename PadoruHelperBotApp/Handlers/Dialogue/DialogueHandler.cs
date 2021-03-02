@@ -51,7 +51,6 @@ namespace PadoruHelperBotApp.Handlers.Dialogue
 
                 _currentStep = _currentStep.NextStep;
             }
-
             await DeleteMessages().ConfigureAwait(false);
 
             return true;

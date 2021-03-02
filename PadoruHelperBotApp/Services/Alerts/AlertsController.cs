@@ -1,5 +1,5 @@
 ﻿using DSharpPlus;
-using PadoruHelperBot.Core.Services.Alerts;
+using PadoruHelperBot.Core.Services;
 using System.Threading.Tasks;
 
 namespace PadoruHelperBotApp.Services.Alerts

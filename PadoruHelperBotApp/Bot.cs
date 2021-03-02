@@ -80,9 +80,13 @@ namespace PadoruHelperBotApp
 
             Commands = Client.UseCommandsNext(commandsConfig);
 
+            EpicRPG(scopeFactory);
+        }
+
+        private void EpicRPG(IServiceScopeFactory scopeFactory)
+        {
             botHelper = new BotHelper(Client, scopeFactory);
             botHelper.RemoveExpiredAlerts();
-            WakeUp();
             botHelper.InitAlertsLoop();
         }
 
@@ -91,6 +95,7 @@ namespace PadoruHelperBotApp
             //Commands.RegisterCommands<FunCommands>();
             Commands.RegisterCommands<TimerCommands>();
             Commands.RegisterCommands<ConfigCommands>();
+            Commands.RegisterCommands<TeamCommands>();
         }
 
         private Task Client_Ready(DiscordClient sender, ReadyEventArgs e)

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PadoruHelperBot.Core.Services.User
+namespace PadoruHelperBot.Core.Services
 {
     public interface IUserSubscriptionsService
     {
@@ -18,30 +18,29 @@ namespace PadoruHelperBot.Core.Services.User
     public class UserSubscriptionsService : IUserSubscriptionsService
     {
         private readonly PadoruHelperContext _context;
+        private readonly IUserService _userService;
 
-        public UserSubscriptionsService(PadoruHelperContext context)
+        public UserSubscriptionsService(PadoruHelperContext context, IUserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
         public async Task<UserSubscriptions> GetOrCreate(ulong userId, ulong guildId)
         {
-            var userSubs = await _context.UserSubscriptions
-                .Where(x => x.GuildId == guildId)
-                .FirstOrDefaultAsync(x => x.UserId == userId).ConfigureAwait(false);
+            var user = await _userService.GetOrCreate(userId).ConfigureAwait(false);
+            var userSubs = user.Subscriptions.FirstOrDefault();
 
             if (userSubs != null) { return userSubs; }
 
-            userSubs = new UserSubscriptions
+            user.Subscriptions.Add(new UserSubscriptions
             {
                 UserId = userId,
                 GuildId = guildId,
                 Works = false,
                 Training = false,
-                Adventure = false
-            };
-
-            _context.UserSubscriptions.Add(userSubs);
+                Adventure = false,
+            });
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
@@ -51,11 +50,15 @@ namespace PadoruHelperBot.Core.Services.User
         public async Task Update(UserSubscriptions userSubscription)
         {
             var userSubs = await _context.UserSubscriptions
-                .FirstOrDefaultAsync(x => x.UserId == userSubscription.UserId && x.GuildId == userSubscription.GuildId);
+                .FirstOrDefaultAsync(x => x.UserId == userSubscription.UserId && x.GuildId == userSubscription.GuildId)
+                .ConfigureAwait(false);
 
             userSubs.Works = userSubscription.Works;
             userSubs.Training = userSubscription.Training;
             userSubs.Adventure = userSubscription.Adventure;
+
+            _context.UserSubscriptions.Attach(userSubs);
+            _context.Entry(userSubs).State = EntityState.Modified;
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

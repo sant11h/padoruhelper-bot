@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PadoruHelperBotDAL;
 
 namespace PadoruHelperBotDAL.Migrations.Migrations
 {
     [DbContext(typeof(PadoruHelperContext))]
-    partial class PadoruHelperContextModelSnapshot : ModelSnapshot
+    [Migration("20210301200811_Teams")]
+    partial class Teams
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,9 +21,8 @@ namespace PadoruHelperBotDAL.Migrations.Migrations
 
             modelBuilder.Entity("PadoruHelperBotDAL.Models.AlertPetition", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<ulong>("UserId")
+                        .HasColumnType("bigint unsigned");
 
                     b.Property<int>("AlertType")
                         .HasColumnType("int");
@@ -35,12 +36,9 @@ namespace PadoruHelperBotDAL.Migrations.Migrations
                     b.Property<DateTime>("SendedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<ulong>("UserId")
-                        .HasColumnType("bigint unsigned");
+                    b.HasKey("UserId", "AlertType");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("AlertPetitions");
+                    b.ToTable("AlertPetition");
                 });
 
             modelBuilder.Entity("PadoruHelperBotDAL.Models.Team", b =>
@@ -57,7 +55,7 @@ namespace PadoruHelperBotDAL.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Team");
                 });
 
             modelBuilder.Entity("PadoruHelperBotDAL.Models.User", b =>
@@ -66,7 +64,7 @@ namespace PadoruHelperBotDAL.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint unsigned");
 
-                    b.Property<ulong?>("TeamId")
+                    b.Property<ulong>("TeamId")
                         .HasColumnType("bigint unsigned");
 
                     b.HasKey("UserId");
@@ -102,7 +100,9 @@ namespace PadoruHelperBotDAL.Migrations.Migrations
                 {
                     b.HasOne("PadoruHelperBotDAL.Models.Team", "Team")
                         .WithMany("Users")
-                        .HasForeignKey("TeamId");
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Team");
                 });

@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PadoruHelperBot.Core.Services.Alerts;
-using PadoruHelperBot.Core.Services.User;
+using PadoruHelperBot.Core.Services;
 using PadoruHelperBotApp.Services.Alerts;
 using PadoruHelperBotDAL;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
@@ -40,6 +39,8 @@ namespace PadoruHelperBotApp
 
             services.AddScoped<IAlertsService, AlertsService>();
             services.AddScoped<IUserSubscriptionsService, UserSubscriptionsService>();
+            services.AddScoped<ITeamService, TeamService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAlertsController, AlertsController>();
 
             var serviceProvider = services.BuildServiceProvider();

@@ -4,8 +4,9 @@ using System.Text;
 
 namespace PadoruHelperBotDAL.Models
 {
-    public class AlertPetition : Entity
+    public class AlertPetition
     {
+        public int Id { get; set; }
         public ulong UserId { get; set; }
         public ulong GuildId { get; set; }
         public ulong ChannelId { get; set; }
