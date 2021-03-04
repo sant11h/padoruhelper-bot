@@ -75,6 +75,7 @@ namespace PadoruHelperBotApp
                 StringPrefixes = configJson.Prefixes,
                 EnableDms = false,
                 EnableMentionPrefix = true,
+                IgnoreExtraArguments = true,
                 Services = services
             };
 
@@ -96,6 +97,7 @@ namespace PadoruHelperBotApp
             Commands.RegisterCommands<TimerCommands>();
             Commands.RegisterCommands<ConfigCommands>();
             Commands.RegisterCommands<TeamCommands>();
+            Commands.RegisterCommands<BuyCommands>();
         }
 
         private Task Client_Ready(DiscordClient sender, ReadyEventArgs e)

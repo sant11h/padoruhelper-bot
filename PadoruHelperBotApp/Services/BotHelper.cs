@@ -31,7 +31,8 @@ namespace PadoruHelperBotApp.Services
                 new WorksStrategy(TimeSpan.FromMinutes(5)),
                 new TrainingStrategy(TimeSpan.FromMinutes(15)),
                 new AdventureStrategy(TimeSpan.FromHours(1)),
-                new GuildStrategy(TimeSpan.FromHours(2))
+                new GuildStrategy(TimeSpan.FromHours(2)),
+                new BuyStrategy(TimeSpan.FromHours(3))
             };
         }
 

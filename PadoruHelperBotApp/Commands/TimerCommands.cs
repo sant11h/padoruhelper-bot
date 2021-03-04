@@ -51,7 +51,6 @@ namespace PadoruHelperBotApp.Commands
                         SendedAt = DateTime.Now
                     });
             }
-            
         }
 
         [Command("adventure")]
@@ -77,7 +76,6 @@ namespace PadoruHelperBotApp.Commands
                         SendedAt = DateTime.Now
                     });
             }
-            
         }
 
         [Command("training")]
@@ -104,7 +102,6 @@ namespace PadoruHelperBotApp.Commands
                     });
             }
         }
-
 
 
         public async Task<bool> IsSubscribed(CommandContext ctx, AlertType alertType)
