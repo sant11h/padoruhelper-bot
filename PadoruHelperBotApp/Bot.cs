@@ -21,7 +21,6 @@ namespace PadoruHelperBotApp
         public DiscordClient Client { get; private set; }
         public InteractivityExtension Interactivity { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
-        private BotHelper botHelper;
 
         public Bot(IServiceProvider services, IServiceScopeFactory scopeFactory)
         {
@@ -80,15 +79,6 @@ namespace PadoruHelperBotApp
             };
 
             Commands = Client.UseCommandsNext(commandsConfig);
-
-            EpicRPG(scopeFactory);
-        }
-
-        private void EpicRPG(IServiceScopeFactory scopeFactory)
-        {
-            botHelper = new BotHelper(Client, scopeFactory);
-            botHelper.RemoveExpiredAlerts();
-            botHelper.InitAlertsLoop();
         }
 
         private void RegisterCommands()

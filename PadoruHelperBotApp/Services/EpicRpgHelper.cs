@@ -1,26 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Timers;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using DSharpPlus;
 using PadoruHelperBotApp.Services.Alerts;
+using Microsoft.Extensions.Hosting;
+using System.Threading;
+using Microsoft.Extensions.Logging;
 
 namespace PadoruHelperBotApp.Services
 {
-    public class BotHelper
+    public class EpicRpgHelper : IHostedService
     {
         private Timer timer;
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly ILogger<EpicRpgHelper> _logger;
         private readonly DiscordClient _client;
         private List<IAlertStrategy> strategies;
 
-        public BotHelper(DiscordClient client, IServiceScopeFactory serviceScopeFactory)
+        public EpicRpgHelper(DiscordClient client, IServiceScopeFactory serviceScopeFactory, ILogger<EpicRpgHelper> logger)
         {
             _client = client;
             _serviceScopeFactory = serviceScopeFactory;
-
+            _logger = logger;
             InitStrategies();
         }
 
@@ -36,16 +39,35 @@ namespace PadoruHelperBotApp.Services
             };
         }
 
-        public void InitAlertsLoop()
+        private async void RemoveExpiredAlerts()
         {
-            timer = new Timer();
-            timer.Interval = 5000;
-            timer.Elapsed += Timer_Elapsed;
-            timer.Start();
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var alertService = scope.ServiceProvider.GetService<IAlertsController>();
+
+                foreach (var strategy in strategies)
+                {
+                    alertService.SetStrategy(strategy);
+                    await alertService.RemoveExpiredAlerts(_client);
+                }
+            }
         }
 
-        private async void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        public Task StartAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Epic RPG Helper has started");
+
+            RemoveExpiredAlerts();
+
+            timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
+
+            return Task.CompletedTask;
+        }
+
+        private async void DoWork(object state)
+        {
+            _logger.LogInformation("Im checking for alerts!");
+
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var alertService = scope.ServiceProvider.GetService<IAlertsController>();
@@ -58,18 +80,13 @@ namespace PadoruHelperBotApp.Services
             }
         }
 
-        public async void RemoveExpiredAlerts()
+        public Task StopAsync(CancellationToken cancellationToken)
         {
-            using (var scope = _serviceScopeFactory.CreateScope())
-            {
-                var alertService = scope.ServiceProvider.GetService<IAlertsController>();
+            _logger.LogInformation("Epic RPG Helper has stopped");
 
-                foreach (var strategy in strategies)
-                {
-                    alertService.SetStrategy(strategy);
-                    await alertService.RemoveExpiredAlerts(_client);
-                }
-            }
+            timer?.Change(Timeout.Infinite, 0);
+
+            return Task.CompletedTask;
         }
     }
 }
