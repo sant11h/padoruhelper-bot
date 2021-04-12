@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PadoruHelperBot.Core.Services;
-using PadoruHelperBot.Services;
 using PadoruHelperBotApp;
+using PadoruHelperBotApp.Services;
 using PadoruHelperBotApp.Services.Alerts;
 using System;
 using System.Collections.Generic;
