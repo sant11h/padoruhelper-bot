@@ -5,6 +5,7 @@
 
 # PadoruHelper
 PadoruHelperBotApp/config.json
+*.db
 
 # User-specific files
 *.rsuser
