@@ -1,18 +1,14 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
-using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
+using DSharpPlus.SlashCommands;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using PadoruHelperBotApp.Commands;
-using PadoruHelperBotApp.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 
 namespace PadoruHelperBotApp
 {
@@ -28,13 +24,13 @@ namespace PadoruHelperBotApp
 
             RegisterCommands();
 
-            Client.ConnectAsync();
+            Client.ConnectAsync().Wait();
         }
 
         public void WakeUp()
         {
             Client.GetGuildAsync(90902701063282688)
-                    .Result.GetChannel(813165215436505138)
+                    .Result.GetChannel(727771508445020160)
                     .SendMessageAsync($"Ahem-ahem, i took a little nap :sleepy:");
         }
 
@@ -57,13 +53,15 @@ namespace PadoruHelperBotApp
                 Token = configJson.Token,
                 TokenType = TokenType.Bot,
                 AutoReconnect = true,
-                MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Debug
+                MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Debug,
             };
 
             Client = new DiscordClient(config);
-
-            Client.Ready += Client_Ready;
-
+            
+            var slashCommands = Client.UseSlashCommands();
+            
+            slashCommands.RegisterCommands<FunCommands>();
+            
             Client.UseInteractivity(new InteractivityConfiguration
             {
                 Timeout = TimeSpan.FromSeconds(30)
@@ -72,27 +70,21 @@ namespace PadoruHelperBotApp
             var commandsConfig = new CommandsNextConfiguration
             {
                 StringPrefixes = configJson.Prefixes,
-                EnableDms = false,
-                EnableMentionPrefix = true,
                 IgnoreExtraArguments = true,
                 Services = services
             };
+
+            // WakeUp();
 
             Commands = Client.UseCommandsNext(commandsConfig);
         }
 
         private void RegisterCommands()
         {
-            //Commands.RegisterCommands<FunCommands>();
             Commands.RegisterCommands<TimerCommands>();
             Commands.RegisterCommands<ConfigCommands>();
             Commands.RegisterCommands<TeamCommands>();
             Commands.RegisterCommands<BuyCommands>();
-        }
-
-        private Task Client_Ready(DiscordClient sender, ReadyEventArgs e)
-        {
-            return Task.CompletedTask;
         }
     }
 }

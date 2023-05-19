@@ -1,24 +1,27 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace PadoruHelperBotDAL.Migrations.Migrations
+#nullable disable
+
+namespace PadoruHelperBotDAL.Migrations
 {
-    public partial class AddTr : Migration
+    /// <inheritdoc />
+    public partial class InitialCreate : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "AlertPetitions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<ulong>(type: "bigint unsigned", nullable: false),
-                    GuildId = table.Column<ulong>(type: "bigint unsigned", nullable: false),
-                    ChannelId = table.Column<ulong>(type: "bigint unsigned", nullable: false),
-                    AlertType = table.Column<int>(type: "int", nullable: false),
-                    SendedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    ChannelId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    AlertType = table.Column<int>(type: "INTEGER", nullable: false),
+                    SendedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,10 +32,10 @@ namespace PadoruHelperBotDAL.Migrations.Migrations
                 name: "Teams",
                 columns: table => new
                 {
-                    Id = table.Column<ulong>(type: "bigint unsigned", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true),
-                    RoleId = table.Column<ulong>(type: "bigint unsigned", nullable: false)
+                    Id = table.Column<ulong>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    RoleId = table.Column<ulong>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,9 +46,9 @@ namespace PadoruHelperBotDAL.Migrations.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<ulong>(type: "bigint unsigned", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    TeamId = table.Column<ulong>(type: "bigint unsigned", nullable: true)
+                    UserId = table.Column<ulong>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TeamId = table.Column<ulong>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -54,19 +57,18 @@ namespace PadoruHelperBotDAL.Migrations.Migrations
                         name: "FK_Users_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "UserSubscriptions",
                 columns: table => new
                 {
-                    UserId = table.Column<ulong>(type: "bigint unsigned", nullable: false),
-                    GuildId = table.Column<ulong>(type: "bigint unsigned", nullable: false),
-                    Works = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Adventure = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Training = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    UserId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    GuildId = table.Column<ulong>(type: "INTEGER", nullable: false),
+                    Works = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Adventure = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Training = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,6 +87,7 @@ namespace PadoruHelperBotDAL.Migrations.Migrations
                 column: "TeamId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

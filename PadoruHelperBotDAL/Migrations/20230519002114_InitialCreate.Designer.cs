@@ -2,41 +2,44 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PadoruHelperBotDAL;
 
-namespace PadoruHelperBotDAL.Migrations.Migrations
+#nullable disable
+
+namespace PadoruHelperBotDAL.Migrations
 {
     [DbContext(typeof(PadoruHelperContext))]
-    partial class PadoruHelperContextModelSnapshot : ModelSnapshot
+    [Migration("20230519002114_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.3");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
             modelBuilder.Entity("PadoruHelperBotDAL.Models.AlertPetition", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("AlertType")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<ulong>("ChannelId")
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("INTEGER");
 
                     b.Property<ulong>("GuildId")
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("SendedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TEXT");
 
                     b.Property<ulong>("UserId")
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -47,13 +50,13 @@ namespace PadoruHelperBotDAL.Migrations.Migrations
                 {
                     b.Property<ulong>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasColumnType("TEXT");
 
                     b.Property<ulong>("RoleId")
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -64,10 +67,10 @@ namespace PadoruHelperBotDAL.Migrations.Migrations
                 {
                     b.Property<ulong>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("INTEGER");
 
                     b.Property<ulong?>("TeamId")
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("UserId");
 
@@ -79,19 +82,19 @@ namespace PadoruHelperBotDAL.Migrations.Migrations
             modelBuilder.Entity("PadoruHelperBotDAL.Models.UserSubscriptions", b =>
                 {
                     b.Property<ulong>("UserId")
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("INTEGER");
 
                     b.Property<ulong>("GuildId")
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Adventure")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Training")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Works")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("UserId", "GuildId");
 

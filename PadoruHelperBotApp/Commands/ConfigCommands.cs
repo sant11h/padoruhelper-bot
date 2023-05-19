@@ -168,7 +168,7 @@ namespace PadoruHelperBotApp.Commands
             embed.AddField($"{arrowEmoji} config training {arrowEmoji}", $"Enable or disable **training** alert. Currently is **{BoolToText(userData.Training)}**.");
             embed.AddField($"{boomEmoji} config adventure {boomEmoji}", $"Enable or disable **adventure** alert. Currently is **{BoolToText(userData.Adventure)}**.");
 
-            await ctx.Channel.SendMessageAsync(embed).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(embed: embed).ConfigureAwait(false);
         }
 
         private async Task<string> TeamString(ulong userId)

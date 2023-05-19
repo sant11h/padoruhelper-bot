@@ -5,16 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using DSharpPlus;
+using DSharpPlus.Entities;
+using DSharpPlus.SlashCommands;
 
 namespace PadoruHelperBotApp.Commands
 {
-    public class FunCommands: BaseCommandModule
+    public class FunCommands: ApplicationCommandModule
     {
-        [Command("ping")]
-        [Description("Returns Pong")]
-        public async Task Ping(CommandContext ctx)
+        [SlashCommand("ping", "pong!")]
+        public async Task Ping(InteractionContext ctx)
         {
-            await ctx.Channel.SendMessageAsync($"{ctx.Member.Mention} Pong!").ConfigureAwait(false);
+            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent("Pong!"));
         }
 
         [Command("repeat")]
